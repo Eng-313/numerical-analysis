@@ -1,36 +1,47 @@
+
+# Euler method python program
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Reading value of n
-n = int(input("How many data points? "))
 
-# Creating numpy array x & y to store n data points
-x = np.zeros(n)
-y = np.zeros(n)
+# function to be solved
+def f(x, y):
+    return x ** 2 + y ** 2
 
-# Reading data
-print("Enter data:")
-for i in range(n):
-    x[i] = float(input("x[" + str(i) + "]= "))
-    y[i] = float(input("y[" + str(i) + "]= "))
 
-# Finding required sum for least square methods
-sumX, sumX2, sumY, sumXY = 0, 0, 0, 0
-for i in range(n):
-    sumX = sumX + x[i]
-    sumX2 = sumX2 + x[i] * x[i]
-    sumY = sumY + y[i]
-    sumXY = sumXY + x[i] * y[i]
+# or
+# f = lambda x: x+y
 
-A = np.array([[n, sumX], [sumX, sumX2]])
-b = np.array([sumY, sumXY])
-z = np.linalg.solve(A, b)
+# Euler method
+def euler(x0, y0, xn, n):
+    # Calculating step size
+    h = (xn - x0) / n
 
-# Finding coefficients a and b
-a1 = z[1]
-a0 = z[0]
+    print('\n-----------SOLUTION-----------')
+    print('------------------------------')
+    print('x0\ty0\tslope\tyn')
+    print('------------------------------')
+    for i in range(n):
+        slope = f(x0, y0)
+        yn = y0 + h * slope
+        print('%.8f\t%.8f\t%0.8f\t%.8f' % (x0, y0, slope, yn))
+        print('------------------------------')
+        y0 = yn
+        x0 = x0 + h
 
-# Displaying coefficients a, b & equation
-print("\nCoefficients are:")
-print("a0: ", a0)
-print("a1: ", a1)
-print("And equation is: y = %0.8f + %0.8f x" % (a0, a1))
+    print('\nAt x=%.8f, y=%.8f' % (xn, yn))
+
+
+# Inputs
+print('Enter initial conditions:')
+x0 = float(input('x0 = '))
+y0 = float(input('y0 = '))
+
+print('Enter calculation point: ')
+xn = float(input('xn = '))
+
+print('Enter number of steps:')
+step = int(input('Number of steps = '))
+
+# Euler method call
+euler(x0, y0, xn, step)

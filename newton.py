@@ -1,32 +1,38 @@
+
+
+# Importing NumPy Library
 import numpy as np
 
-# Reading value of n
-n = int(input("How many data points? "))
+# Reading number of unknowns
+n = int(input('Enter number of data points: '))
 
-# Creating numpy array x & y to store n data points
+# Making numpy array of n & n x n size and initializing
+# to zero for storing x and y value along with differences of y
 x = np.zeros(n)
 y = np.zeros(n)
 
-# Reading data
-print("Enter data:")
+# Reading data points
+print('Enter data for x and y: ')
 for i in range(n):
-    x[i] = float(input("x[" + str(i) + "]= "))
-    y[i] = float(input("y[" + str(i) + "]= "))
+    x[i] = float(input('x[' + str(i) + '] = '))
+    y[i] = float(input('y[' + str(i) + '] = '))
 
-# Finding required sum for least square methods
-sumX, sumX2, sumY, sumXY = 0, 0, 0, 0
+# Reading interpolation point
+xp = float(input('Enter interpolation point: '))
+
+# Set interpolated value initially to zero
+yp = 0
+
+# Implementing Lagrange Interpolation
 for i in range(n):
-    sumX = sumX + x[i]
-    sumX2 = sumX2 + x[i] * x[i]
-    sumY = sumY + y[i]
-    sumXY = sumXY + x[i] * y[i]
 
-# Finding coefficients a and b
-b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
-a = (sumY - b * sumX) / n
+    p = 1
 
-# Displaying coefficients a, b & equation
-print("\nCoefficients are:")
-print("a: ", a)
-print("b: ", b)
-print("And equation is: y = %0.8f + %0.8f x" % (a, b))
+    for j in range(n):
+        if i != j:
+            p = p * (xp - x[j]) / (x[i] - x[j])
+
+    yp = yp + p * y[i]
+
+# Displaying output
+print('Interpolated value at %.8f is %.8f.' % (xp, yp))
